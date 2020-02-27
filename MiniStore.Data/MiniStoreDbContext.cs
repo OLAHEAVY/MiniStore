@@ -17,6 +17,8 @@ namespace MiniStore.Data
 
         }
 
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
             base.OnConfiguring(optionBuilder);
