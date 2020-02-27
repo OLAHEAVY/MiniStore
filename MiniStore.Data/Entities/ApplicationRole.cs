@@ -8,5 +8,7 @@ namespace MiniStore.Data.Entities
     public class ApplicationRole : IdentityRole<long>
     {
         public DateTime CreatedDate { get; set; }
+
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

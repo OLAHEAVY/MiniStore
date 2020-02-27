@@ -10,7 +10,7 @@ using MiniStore.Data;
 namespace MiniStore.Data.Migrations
 {
     [DbContext(typeof(MiniStoreDbContext))]
-    [Migration("20200227101134_InitialMigration")]
+    [Migration("20200227111441_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,21 +86,6 @@ namespace MiniStore.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserLogins");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
@@ -242,6 +227,21 @@ namespace MiniStore.Data.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("MiniStore.Data.Entities.UserRole", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.HasOne("MiniStore.Data.Entities.ApplicationRole", null)
@@ -269,14 +269,8 @@ namespace MiniStore.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
                 {
-                    b.HasOne("MiniStore.Data.Entities.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MiniStore.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -284,10 +278,16 @@ namespace MiniStore.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
+            modelBuilder.Entity("MiniStore.Data.Entities.UserRole", b =>
                 {
-                    b.HasOne("MiniStore.Data.Entities.ApplicationUser", null)
-                        .WithMany()
+                    b.HasOne("MiniStore.Data.Entities.ApplicationRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MiniStore.Data.Entities.ApplicationUser", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

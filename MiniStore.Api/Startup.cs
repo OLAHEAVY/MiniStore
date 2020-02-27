@@ -43,6 +43,9 @@ namespace MiniStore.Api
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
 
             }).AddEntityFrameworkStores<MiniStoreDbContext>()
+            .AddRoleManager<RoleManager<ApplicationRole>>()
+            .AddSignInManager<SignInManager<ApplicationUser>>()
+            .AddRoleValidator<RoleValidator<ApplicationRole>>()
             .AddDefaultTokenProviders();
         }
 
