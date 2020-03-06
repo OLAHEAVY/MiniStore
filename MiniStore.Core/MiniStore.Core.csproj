@@ -5,8 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="4.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.2" />
+    <PackageReference Include="MimeKit" Version="2.5.1" />
+    <PackageReference Include="SendGrid" Version="9.12.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MiniStore.Data\MiniStore.Data.csproj" />
+    <ProjectReference Include="..\MiniStore.Utility\MiniStore.Utility.csproj" />
   </ItemGroup>
 
 </Project>

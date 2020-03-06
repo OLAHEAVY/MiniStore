@@ -1,25 +1,30 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MiniStore.Core;
 using MiniStore.Core.Helpers;
 using MiniStore.Data;
 using MiniStore.Data.Entities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Filters;
+
 
 namespace MiniStore.Api
 {
@@ -35,9 +40,15 @@ namespace MiniStore.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+             .AddNewtonsoftJson(options => {
+                 // Use the default property (Pascal) casing
+                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
-            services.AddDbContext<MiniStoreDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+             });
+
+                services.AddDbContext<MiniStoreDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -58,6 +69,7 @@ namespace MiniStore.Api
             services.AddCoreServices();
 
             //JWT SETTINGS
+            
             JwtSettings settings;
             settings = GetJwtSettings();
             var assembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
@@ -68,7 +80,7 @@ namespace MiniStore.Api
 
             }).AddJwtBearer("Bearer", jwt =>
             {
-                jwt.RequireHttpsMetadata = false;
+               jwt.RequireHttpsMetadata = false;
                 jwt.SaveToken = true;
                 jwt.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -82,6 +94,24 @@ namespace MiniStore.Api
                     ClockSkew = TimeSpan.FromMinutes(settings.Lifespan)
                 };
             });
+
+            services.AddSingleton(settings);
+
+            //SWAGGER CONFIGURATION 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mini Store API", Version = "v1" });
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
 
@@ -103,6 +133,14 @@ namespace MiniStore.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            //Swagger Config
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "post API V1");
             });
         }
         //JWT SETTINGS
