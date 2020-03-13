@@ -26,6 +26,9 @@ namespace MiniStore.Core
             services.AddSingleton<EncryptionService>();
             services.AddSingleton<AesEncryption>();
             services.AddScoped<ICommonHelper, CommonHelper>();
+            services.AddScoped<IStateService, StateService>();
+            services.AddScoped<ILocalGovernmentService, LocalGovernmentService>();
+      
         }
     }
 }

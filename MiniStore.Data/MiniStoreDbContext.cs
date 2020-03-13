@@ -19,10 +19,15 @@ namespace MiniStore.Data
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
+        public DbSet<State> State { get; set; }
+
+        public DbSet<LocalGovernment> LocalGovernment { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
             base.OnConfiguring(optionBuilder);
         }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

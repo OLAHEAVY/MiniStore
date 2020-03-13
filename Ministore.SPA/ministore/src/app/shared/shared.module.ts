@@ -11,6 +11,10 @@ import {
     NgxUiLoaderRouterModule,
     NgxUiLoaderHttpModule
 } from "ngx-ui-loader";
+import { ToastrModule } from "ngx-toastr";
+import { NgxLoadingModule, ngxLoadingAnimationTypes } from 'ngx-loading';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 
@@ -31,13 +35,33 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     imports: [CommonModule,
              ReactiveFormsModule,
              FormsModule,
+             BrowserAnimationsModule,
+             BrowserModule,
              NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
-             HttpClientModule
+             HttpClientModule,
+             NgxLoadingModule.forRoot({
+                animationType: ngxLoadingAnimationTypes.circle,
+                fullScreenBackdrop: true,
+                backdropBackgroundColour: 'rgba(0,0,0,0.1)',
+                backdropBorderRadius: '14px',
+                primaryColour: '#536838',
+                secondaryColour: '#a8ac2e',
+                tertiaryColour: '#ffffff'
+            }),
+             ToastrModule.forRoot({
+                preventDuplicates: false,
+                timeOut: 10000,
+                positionClass: "toast-top-center"
+            })
+            
            ],
     declarations: [],
     exports:[CommonModule,
             FormsModule,
-            ReactiveFormsModule],
+            ReactiveFormsModule,
+            ToastrModule,
+            NgxLoadingModule,
+            NgxUiLoaderModule],
     providers: []
 })
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniStore.Data;
 
 namespace MiniStore.Data.Migrations
 {
     [DbContext(typeof(MiniStoreDbContext))]
-    partial class MiniStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200310163729_AddedStateAndLocalGovernment")]
+    partial class AddedStateAndLocalGovernment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -110,7 +110,7 @@ namespace MiniStore.Api.Controllers
                 {
                     response.HasError = true;
                     response.Message = result.ResponseMessage.Message;
-                    _logger.LogInformation($"Error with User Login:: ${result.ResponseMessage.Message}. Data ==>> {JsonConvert.SerializeObject(model.UserName)}");
+                    _logger.LogInformation($"Error with User Login:: ${result.ResponseMessage.Message}. Data ==>> {JsonConvert.SerializeObject(model.Email)}");
                 }
 
             }

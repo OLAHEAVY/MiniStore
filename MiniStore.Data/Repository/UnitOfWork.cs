@@ -17,9 +17,17 @@ namespace MiniStore.Data.Repository
 
             User = new UserRepository(_db);
 
+            State = new StateRepository(_db);
+
+            LocalGovernment = new LocalGovernmentRepository(_db);
+
         }
 
         public IUserRepository User { get; private set; }
+
+        public IStateRepository State { get; private set; }
+
+        public ILocalGovernmentRepository LocalGovernment { get; private set; }
 
         public void Dispose()
         {

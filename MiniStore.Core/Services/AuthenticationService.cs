@@ -175,12 +175,12 @@ namespace MiniStore.Core.Services
         public async Task<UserResponseModel> CheckValidUser(LoginModel model)
         {
             //checking if the user exists on the platform.
-            var user =await  _userManager.FindByNameAsync(model.UserName);
+            var user =await  _userManager.FindByNameAsync(model.Email);
 
             if (user == null)
             {
                 //the user does not exist on the platform
-                _logger.LogInformation(model.UserName + "does not exist on the platform");
+                _logger.LogInformation(model.Email + "does not exist on the platform");
                 return new UserResponseModel { ResponseMessage = _commonHelper.OutputMessage(false, "UserName or Password is Invalid") };
             }
             else

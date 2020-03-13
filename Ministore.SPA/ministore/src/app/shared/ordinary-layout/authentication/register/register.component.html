@@ -1,98 +1,357 @@
 <div class="container register">
   <div class="row">
-      <div class="col-md-3 register-left">
-          <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
-          <h3>Welcome</h3>
-          <p>You are 30 seconds away from creating your account</p>
-          <input type="submit" name="" value="Login"/><br/>
-      </div>
-      <div class="col-md-9 register-right">
-          <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                  <h3 class="register-heading">Register </h3>
-                  <div class="row register-form">
-                      <div class="col-md-6">
-                          <div class="form-group">
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text bg-transparent"><i class="fas fa-user"></i></span>
-                              </div>
-                              <input type="text" class="form-control pl-15 bg-transparent plc-white" placeholder="Firstname">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text bg-transparent"><i class="fas fa-user"></i></span>
-                              </div>
-                              <input type="email" class="form-control pl-15 bg-transparent plc-white" placeholder="Email">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text bg-transparent"><i class="fas fa-user"></i></span>
-                              </div>
-                              <input type="text" minlength="11" maxlength="11" class="form-control pl-15 bg-transparent plc-white" placeholder="Phonenumber">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text bg-transparent"><i class="fas fa-user"></i></span>
-                              </div>
-                              <input type="text" class="form-control pl-15 bg-transparent plc-white" placeholder="Lastname">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="maxl">
-                                  <label class="radio inline"> 
-                                      <input type="radio" name="gender" value="male" checked>
-                                      <span> Male </span> 
-                                  </label>
-                                  <label class="radio inline"> 
-                                      <input type="radio" name="gender" value="female">
-                                      <span>Female </span> 
-                                  </label>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-md-6">
-                          <div class="form-group">
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text bg-transparent"><i class="fas fa-users"></i></span>
-                              </div>
-                              <input type="text" class="form-control pl-15 bg-transparent plc-white" placeholder="Lastname">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text bg-transparent"><i class="fas fa-lock"></i></span>
-                              </div>
-                              <input type="text" class="form-control pl-15 bg-transparent plc-white" placeholder="Lastname">
-                            </div>
-                          </div>
-                          <div class="form-group">
-                              <select class="form-control">
-                                  <option class="hidden"  selected disabled>Please select your Sequrity Question</option>
-                                  <option>What is your Birthdate?</option>
-                                  <option>What is Your old Phone Number</option>
-                                  <option>What is your Pet Name?</option>
-                              </select>
-                          </div>
-                          <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
-                          </div>
-                          <input type="submit" class="btnRegister"  value="Register"/>
-                      </div>
+    <div class="col-md-3 register-left">
+      <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+      <h3>Welcome</h3>
+      <p>You are 30 seconds away from creating your account</p>
+      <!-- <input type="submit" name="" value="Login"/><br/> -->
+      <a class="btn btn-outline-light btn-lg" [routerLink]="['/login']"
+        >Login</a
+      >
+    </div>
+    <div class="col-md-9 register-right">
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade show active"
+          id="home"
+          role="tabpanel"
+          aria-labelledby="home-tab"
+        >
+          <h3 class="register-heading">Register</h3>
+          <form [formGroup]="registerForm" (ngSubmit)="register()">
+            <div class="row register-form">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-user"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control pl-15 bg-transparent plc-white"
+                      placeholder="Firstname"
+                      formControlName="firstName"
+                      [ngClass]="{
+                        'is-invalid': registerForm.get('firstName').errors && submitted
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="registerForm.get('firstName').errors && submitted">
+                        <span *ngIf="registerForm.hasError('required', 'firstName')">
+                          <span class="text-danger">
+                            Please enter your Firstname
+                          </span>
+                        </span>
+                        <span *ngIf="registerForm.hasError('minlength', 'firstName')">
+                          <span class="text-danger">
+                            The first name must be longer than 3 characters.
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                    
+                    
                   </div>
-              </div>
-           
-               
-          </div>
-      </div>
-  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-envelope"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="email"
+                      class="form-control pl-15 bg-transparent plc-white"
+                      placeholder="Email"
+                      formControlName="email"
+                      [ngClass]="{
+                        'is-invalid': registerForm.get('email').errors && submitted
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="registerForm.get('email').errors && submitted">
+                        <span *ngIf="registerForm.hasError('required', 'email')">
+                          <span class="text-danger">
+                            Please enter an Email
+                          </span>
+                        </span>
+                        <span *ngIf="registerForm.hasError('email', 'email')">
+                          <span class="text-danger">
+                            Please enter a Valid Email
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-mobile"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      minlength="11"
+                      maxlength="11"
+                      class="form-control pl-15 bg-transparent plc-white"
+                      placeholder="Phonenumber"
+                      formControlName="phone"
+                      [ngClass]="{
+                        'is-invalid': registerForm.get('phone').errors && submitted
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="registerForm.get('phone').errors && submitted">
+                        <span *ngIf="registerForm.hasError('required', 'phone')">
+                          <span class="text-danger">
+                            Please enter a Phone Number
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-address-card"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control pl-15 bg-transparent plc-white"
+                      placeholder="Address"
+                      formControlName="address"
+                      [ngClass]="{
+                        'is-invalid': registerForm.get('address').errors && submitted
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="registerForm.get('address').errors && submitted">
+                        <span *ngIf="registerForm.hasError('required', 'address')">
+                          <span class="text-danger">
+                            Please enter an Address
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-lock"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="password"
+                      class="form-control pl-15 bg-transparent plc-white"
+                      placeholder="Password"
+                      formControlName="password"
+                      [ngClass]="{
+                        'is-invalid': registerForm.get('password').errors && submitted
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="registerForm.get('password').errors && submitted">
+                        <span *ngIf="registerForm.hasError('required', 'password')">
+                          <span class="text-danger">
+                            Please enter a Password
+                          </span>
+                        </span>
+                      </span>
+                      <span *ngIf="registerForm.get('password').errors && submitted">
+                        <span *ngIf="registerForm.hasError('minlength', 'password')">
+                          <span class="text-danger">
+                            Minimum Length for Password is 8 characters
+                          </span>
+                        </span>
+                      </span>
+                      <span *ngIf="registerForm.get('password').errors && submitted">
+                        <span *ngIf="registerForm.hasError('maxlength', 'password')">
+                          <span class="text-danger">
+                            Maximum Length for Password is 11 characters
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" style="margin-right:10px"
+                    >I am a:
+                  </label>
 
+                  <label class="radio-inline">
+                    <input
+                      class="mr-3"
+                      type="radio"
+                      value="male"
+                      formControlName="gender"
+                    />Male
+                  </label>
+
+                  <label class="radio-inline ml-3">
+                    <input
+                      class="mr-3"
+                      type="radio"
+                      value="female"
+                      formControlName="gender"
+                    />Female
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-user"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control pl-15 bg-transparent plc-white"
+                      placeholder="Lastname"
+                      formControlName="lastName"
+                      [ngClass]="{
+                        'is-invalid': registerForm.get('lastName').errors && submitted
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="registerForm.get('lastName').errors && submitted">
+                        <span *ngIf="registerForm.hasError('required', 'lastName')">
+                          <span class="text-danger">
+                            Please enter your Lastname
+                          </span>
+                        </span>
+                        <span *ngIf="registerForm.hasError('minlength', 'lastName')">
+                          <span class="text-danger">
+                            The lastName name must be longer than 3 characters.
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-calendar"></i
+                      ></span>
+                    </div>
+                    <input
+                      placeholder="Date of Birth"
+                      type="text"
+                      bsDatepicker
+                      [bsConfig]="bsConfig"
+                      formControlName="dateOfBirth"
+                      [ngClass]="{
+                        'is-invalid': registerForm.get('dateOfBirth').errors && submitted
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="registerForm.get('dateOfBirth').errors && submitted">
+                        <span *ngIf="registerForm.hasError('required', 'dateOfBirth')">
+                          <span class="text-danger">
+                            Please select a Date
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <select class="form-control" formControlName="state"  [ngClass]="{
+                    'is-invalid': registerForm.get('state').errors && submitted
+                  }">
+                    <option value="" class="hidden" selected disabled
+                      >Please select your State</option
+                    >
+                  </select>
+                  <span class="invalid-feedback">
+                    <span *ngIf="registerForm.get('state').errors && submitted">
+                      <span *ngIf="registerForm.hasError('required', 'state')">
+                        <span class="text-danger">
+                          Please select a State
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                
+                </div>
+                <div class="form-group">
+                  <select class="form-control" formControlName="city"  [ngClass]="{
+                    'is-invalid': registerForm.get('state').errors && submitted
+                  }">
+                    <option value="" class="hidden" selected disabled
+                      >Please select your City</option
+                    >
+                  </select>
+                  <span class="invalid-feedback">
+                    <span *ngIf="registerForm.get('city').errors && submitted">
+                      <span *ngIf="registerForm.hasError('required', 'city')">
+                        <span class="text-danger">
+                          Please select a City
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-transparent"
+                        ><i class="fa fa-lock"></i
+                      ></span>
+                    </div>
+                    <input
+                      type="password"
+                      class="form-control pl-15 bg-transparent plc-white"
+                      placeholder="Confirm Password"
+                      formControlName="confirmPassword"
+                      [ngClass]="{
+                        'is-invalid': (registerForm.get('confirmPassword').errors && submitted &&
+                        registerForm.get('confirmPassword').touched) ||
+                      registerForm.hasError('mismatch')
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf=" registerForm.hasError('mismatch') &&
+                      registerForm.get('confirmPassword').touched">
+                        <span *ngIf=" registerForm.hasError('mismatch') &&
+                        registerForm.get('confirmPassword').touched">
+                          <span class="text-danger">
+                            Password does not match
+                          </span>
+                        </span>
+                      </span>
+                     
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  class="btn btn-primary btn-md"
+                  type="submit"
+                  [disabled]="!registerForm.valid"
+                >
+                  Register
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,14 +1,15 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-
+using System.Net;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,7 @@ using MiniStore.Core;
 using MiniStore.Core.Helpers;
 using MiniStore.Data;
 using MiniStore.Data.Entities;
+using MiniStore.Utility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Filters;
@@ -122,10 +124,27 @@ namespace MiniStore.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                // Handling Errors in the angular application. 
+                app.UseExceptionHandler(builder => {
+                    builder.Run(async context => {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message);
+                        }
+                    });
+                });
+                //app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthorization();
             app.UseAuthentication();
