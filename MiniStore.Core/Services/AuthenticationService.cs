@@ -78,8 +78,15 @@ namespace MiniStore.Core.Services
                 _logger.LogInformation(StaticRole.CustomerUser + "is assigned to the user" + user.Email);
 
                 //send confirmation email to the created User
-                await SendVerificationLink(user);
-                _logger.LogInformation("Email confirmation sent to the registered email" + user.Email);
+               if( await SendVerificationLink(user))
+               {
+                    _logger.LogInformation("Email confirmation sent to the registered email" + user.Email);
+                }
+                else
+                {
+                    _logger.LogInformation("Email confirmation not sent to the registered email. An error occured." + user.Email);
+                }
+               
               
 
                 return new UserAccountModel { IdentityResult = result, User = user };
@@ -94,7 +101,7 @@ namespace MiniStore.Core.Services
         }
 
 
-        public async Task SendVerificationLink(ApplicationUser user)
+        public async Task<bool> SendVerificationLink(ApplicationUser user)
         {
             //generating the email confirmation token
             var activationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -144,6 +151,8 @@ namespace MiniStore.Core.Services
                 );
 
             await _emailService.SendEmailAsync(user.Email, subject, messageBody);
+
+            return true;
 
         }
 
@@ -261,6 +270,27 @@ namespace MiniStore.Core.Services
         {
             var claims = _userManager.GetClaimsAsync(user: user).Result;
             return claims;
+        }
+
+
+        //method to confirm account
+        public async Task<UserAccountModel> ConfirmAccount(string token)
+        {
+            var data = new UserAccountModel();
+            var code = _encryptionService.DecryptText(token);
+            var result = new IdentityResult();
+            if (!string.IsNullOrEmpty(code))
+            {
+                var activateObj = JsonConvert.DeserializeObject<AccountVerificationModel>(code);
+                var user = await _userManager.FindByIdAsync(activateObj.UserId.ToString());
+
+                result = await _userManager.ConfirmEmailAsync(user, activateObj.Code);
+                data.User = user;
+                data.IdentityResult = result;
+
+               
+            }
+            return data;
         }
 
 

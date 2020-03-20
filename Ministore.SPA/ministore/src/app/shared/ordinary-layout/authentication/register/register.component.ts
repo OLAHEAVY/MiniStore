@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RegisterModel } from "src/app/_models/register-model";
 import { AuthenticationService } from "src/app/_services/authentication.service";
 import { ResponseModel } from "src/app/_models/response";
+import { DropdownModel } from 'src/app/_models/dropdown-model';
 
 @Component({
   selector: "app-register",
@@ -26,6 +27,8 @@ export class RegisterComponent implements OnInit {
   loading: boolean = false;
   submitted: boolean = false;
   user: RegisterModel;
+  states: any;
+  localGovernments: any;
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +44,7 @@ export class RegisterComponent implements OnInit {
       containerClass: "theme-blue"
     };
     this.createRegisterForm();
+    this.getAllStates();
   }
 
   //Reactive Form
@@ -100,7 +104,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(this.user).subscribe((x: ResponseModel) => {
         //checking if the Has error is false or true
         if (!x.HasError) {
-          this.toastr.info(x.Message, 'Success');
+          this.toastr.success(x.Message, 'Success');
           this.router.navigate(['/login'])
         }else{
           this.toastr.warning(x.Message, 'Error');
@@ -115,5 +119,25 @@ export class RegisterComponent implements OnInit {
       }
     })
     }
+  }
+
+  getAllStates(){
+    this.authService.getStates().subscribe((x:ResponseModel) => {
+       if(!x.HasError){
+          this.states = x.Result
+       }else{
+         this.toastr.error(x.Message, 'Error');
+       }
+    })
+  }
+
+  getAllLocalGovernments(id:string){
+    this.authService.getLocalGovernments(id).subscribe((x:ResponseModel) => {
+      if(!x.HasError){
+        this.localGovernments = x.Result
+      }else{
+        this.toastr.error(x.Message, 'Error');
+      }
+    })
   }
 }

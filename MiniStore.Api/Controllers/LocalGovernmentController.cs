@@ -25,8 +25,8 @@ namespace MiniStore.Api.Controllers
         }
 
         [Route("getalllocalgovernments")]
-        [HttpPost]
-        public IActionResult GetAllLocalGovernments([FromBody] string stateId)
+        [HttpGet]
+        public IActionResult GetAllLocalGovernments(string stateId)
         {
             var response = new ApiResult<IEnumerable<SelectListItem>>();
             var localGovernments = _localGovernmentService.GetLocalGovernmentDropdownList(stateId);

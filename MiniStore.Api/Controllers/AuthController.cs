@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MiniStore.Core.Dto;
 using MiniStore.Core.Interface;
@@ -22,10 +23,12 @@ namespace MiniStore.Api.Controllers
         private readonly IAuthentication _authService;
         private readonly ILog _logger;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AuthController(IAuthentication authService, ILog logger, IMapper mapper)
+        public AuthController(IAuthentication authService, ILog logger, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
             _authService = authService;
+            _userManager = userManager;
             _logger = logger;
             _mapper = mapper;
         }
@@ -56,7 +59,7 @@ namespace MiniStore.Api.Controllers
                 {
                     response.Errors = null;
                     response.HasError = false;
-                    response.Message = $"A Verification email has been sent to {result.User.Email}. Kindly confirm your account and setup your password.";
+                    response.Message = $"A Verification email has been sent to {result.User.Email}.";
                     response.Result = user;
                 }
                 else
@@ -127,5 +130,95 @@ namespace MiniStore.Api.Controllers
 
         }
 
+        //controller method to confirm account
+        [HttpGet]
+        [Route("confirmaccount")]
+        public async Task<IActionResult> ConfirmAccount(string token)
+        {
+            var response = new ApiResult<string>();
+            try
+            {
+                if (!string.IsNullOrEmpty(token))
+                {
+                    var confirm = await _authService.ConfirmAccount(token);
+                    if (confirm.IdentityResult.Succeeded)
+                    {
+                        response.HasError = false;
+                        response.Message = "Your email " + confirm.User.Email + "has been confirmed";
+                    }
+                    else
+                    {
+                        response.HasError = true;
+                        response.Message = confirm.IdentityResult.Errors.FirstOrDefault().Description;
+                        
+                    }
+
+                }
+
+            }
+            catch(Exception ex)
+            {
+                _logger.LogException("Email could not be confirmed due to an error" + ex.Message, ex);
+                response.HasError = true;
+                response.Message = "An error occured";
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("resendLink")]
+        public async Task<IActionResult> ResendConfirmationLink(ResendConfirmModel model)
+        {
+            var response = new ApiResult<string>();
+            try
+            {
+               
+                var user = await _userManager.FindByNameAsync(model.Email);
+
+                if(user == null)
+                {
+                    response.HasError = true;
+                    response.Message = "Invalid Request";
+                }
+                else
+                {
+                    if (user.EmailConfirmed)
+                    {
+                        response.HasError = false;
+                        response.Message = "Email has already been Confirmed. Please login";
+                    }
+                    else
+                    {
+                        var sendLinkAgain = await _authService.SendVerificationLink(user);
+
+                        if (sendLinkAgain)
+                        {
+                            response.HasError = false;
+                            response.Message = "Email Confirmation Link sent successfully";
+                        }
+                        else
+                        {
+                            response.HasError = true;
+                            response.Message = "Email Confirmation Link could not be sent";
+                        }
+                    }
+
+                }
+
+
+            }
+            catch(Exception ex)
+            {
+                _logger.LogException("Error sending email confirmation:" + ex.Message, ex);
+                response.HasError = true;
+                response.Message = "An error occuured";
+            }
+
+            return Ok(response);
+            
+        }
     }
+
+    
 }

@@ -1,4 +1,6 @@
-<div class="container register">
+<ngx-loading [show]="loading"></ngx-loading>
+<ordinary-header></ordinary-header>
+<div class="container register" style="margin-top: 95px;">
   <div class="row">
     <div class="col-md-3 register-left">
       <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
@@ -271,12 +273,13 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <select class="form-control" formControlName="state"  [ngClass]="{
+                  <select class="form-control" formControlName="state" (change)="getAllLocalGovernments(registerForm.get('state').value)"  [ngClass]="{
                     'is-invalid': registerForm.get('state').errors && submitted
                   }">
                     <option value="" class="hidden" selected disabled
                       >Please select your State</option
                     >
+                    <option *ngFor="let state of states" [value]="state.Value">{{state.Text}}</option>
                   </select>
                   <span class="invalid-feedback">
                     <span *ngIf="registerForm.get('state').errors && submitted">
@@ -296,6 +299,7 @@
                     <option value="" class="hidden" selected disabled
                       >Please select your City</option
                     >
+                    <option *ngFor="let localGovernment of localGovernments" [value]="localGovernment.Text">{{localGovernment.Text}}</option>
                   </select>
                   <span class="invalid-feedback">
                     <span *ngIf="registerForm.get('city').errors && submitted">
@@ -355,3 +359,4 @@
     </div>
   </div>
 </div>
+<ordinary-footer></ordinary-footer>

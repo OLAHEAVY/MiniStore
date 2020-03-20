@@ -6,19 +6,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
+import { CustomerModule } from './customer/customer.module';
+
+
 
 @NgModule({
    declarations: [
-      AppComponent,
-      HomeComponent
+      AppComponent
    ],
    imports: [
+      CommonModule,
       BrowserModule,
       BrowserAnimationsModule,
       AppRoutingModule,
       SharedModule,
+      CustomerModule,
       AngularFontAwesomeModule
    ],
    providers: [],

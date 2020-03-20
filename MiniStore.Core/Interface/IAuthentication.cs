@@ -14,5 +14,9 @@ namespace MiniStore.Core.Interface
         Task<UserResponseModel> CheckValidUser(LoginModel model);
 
         Task<string> GenerateAccessToken(ApplicationUser user);
+
+        Task<UserAccountModel> ConfirmAccount(string token);
+
+        Task<bool> SendVerificationLink(ApplicationUser user);
     }
 }

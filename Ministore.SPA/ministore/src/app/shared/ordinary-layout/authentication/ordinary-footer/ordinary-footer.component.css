@@ -1,0 +1,85 @@
+.footer {
+  position: relative;
+  width: 100%;
+  min-height: 150px;
+  background: #ffffff;
+  padding: 10px 0;
+  z-index: 1;
+  box-shadow: 9px 2px 9px #3292a6;
+}
+.footer .social-area {
+  margin-top: 50px;
+  width: 40%;
+}
+.footer .social-area ul {
+  z-index: 1;
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: right;
+  position: absolute;
+  right: 7%;
+  box-sizing: border-box;
+}
+.footer .social-area ul li {
+  display: inline-block;
+  text-align: center;
+  line-height: 0;
+}
+.footer .social-area ul li a {
+  font-size: 28px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #28aae1;
+  text-decoration: none;
+}
+.footer .social-area ul li a i {
+  display: block;
+  margin-left: 20px;
+  padding: 0 20px;
+  text-align: center;
+}
+.footer .shr-btn-facebook:hover {
+  color: #3b5998;
+}
+.footer .shr-btn-instagram:hover {
+  color: #3f729b;
+}
+.footer .shr-btn-behance:hover {
+  color: #1769ff;
+}
+.footer .shr-btn-soundcloud:hover {
+  color: #f76700;
+}
+.footer .social-area ul li a span {
+  display: none;
+}
+.footer .credits {
+  font-weight: normal;
+  position: absolute;
+  width: 100%;
+  color: #474747;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 20px;
+  line-height: 1px;
+  padding: 0;
+}
+.footer .credits p {
+  position: absolute;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 20px;
+  line-height: 1px;
+  padding: 0;
+  left: 9%;
+}
+.footer-white {
+  color: #fff;
+  font-weight: normal;
+}
+.slice-footer {
+  width: 100px;
+  height: 135px;
+  margin-top: -45px;
+}

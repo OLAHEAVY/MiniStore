@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-sm navbar-light fixed-top py-3">
+  <div class="container">
+      <a class="navbar-brand">
+          <img src="../../../../../assets/images/SiteLogo.png" alt="Site Logo" width="250" height="50" />
+      </a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse d-sm-inline-flex flex-sm-row-reverse" id="navbarCollapse">
+
+          <ul class="navbar-nav m1-auto">
+              <li class="nav-item">
+                  <a class="nav-link" [routerLink]="['/home']" style="color: #28aae1; font-size: 18px;font-weight: bolder;"><i class="fa fa-home"></i> Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" *ngIf="loggedIn()" [routerLink]="['/shophomepage']" style="color: #28aae1; font-size: 18px;font-weight: bolder;"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Shop</a>
+            </li>
+              <li class="nav-item">
+                  <a class="nav-link" style="color: #28aae1; font-size: 18px;font-weight: bolder;"><i class="fa fa-newspaper-o"></i> Blog</a>
+              </li>
+             
+              <li class="nav-item">
+                  <a class="nav-link btn" style="color: #28aae1; font-size: 18px;font-weight: bolder;" (click)= "contactModal()" ><i class="fa fa-fax"></i> Contact</a>
+              </li>
+              <div class="dropdown" dropdown>
+                <span class="mr-1">
+                  <img src="../../../../../assets/images/user.png" alt="Navbar Image" />
+                </span>
+                <a class="dropdown-toggle" style="color: #28aae1; font-size: 16px;font-weight: bolder;" dropdownToggle>
+                  Register/Login
+                </a>
+          
+                <div class="dropdown-menu mt-3" *dropdownMenu>
+                  <a class="dropdown-item" [routerLink]="['/login']" *ngIf="!loggedIn()" style="color: #28aae1; font-size: 16px;font-weight: bolder;"
+                    ><i class="fa fa-sign-in" ></i> Login</a
+                  >
+                  <div class="dropdown-divider"></div>
+                   <a class="dropdown-item" [routerLink]="['/register']" *ngIf="!loggedIn()" style="color: #28aae1; font-size: 16px;font-weight: bolder;"
+                    ><i class="fa fa-user-plus"></i> Register</a
+                  >
+                  <a class="dropdown-item" [routerLink]="['/login']" *ngIf="loggedIn()" style="color: #28aae1; font-size: 16px;font-weight: bolder;"
+                  ><i class="fa fa-sign-in" ></i> Edit Profile</a
+                >
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" *ngIf="loggedIn()" (click)= "logout()" style="color: #28aae1; font-size: 16px;font-weight: bolder;"
+                    ><i class="fa fa-sign-out"></i> Logout</a>
+                </div>
+              </div>
+             
+        </ul>
+      </div>
+
+  </div>
+</nav>

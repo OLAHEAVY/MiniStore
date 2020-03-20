@@ -1,0 +1,45 @@
+ /* Navbar
+-------------------------------------------------- */
+.navbar{
+    box-shadow: 2px 2px 9px #3292a6;
+    opacity:1.0;
+    background:#fff;
+}
+
+.linkColor{
+    color: #28aae1;
+}
+
+.navbar .nav-item{
+    font-size: 18px;
+    padding-right: 20px;
+}
+
+.navbar .nav-link{
+    font-size:14px;
+    text-transform:uppercase;
+    padding-left:16px !important;
+    padding-right:16px !important;
+}
+
+.navbar .nav-item.active{
+    border-left:#444 3px solid;
+}
+
+body {
+    margin-top: 100px;
+}
+
+img{
+    max-height: 50px;
+    border:2px solid white;
+    display: inline;
+}
+
+.dropdown-toggle, .dropdown-item{
+    cursor: pointer;
+}
+
+/*End Of Navbar
+-------------------------------------------------- */
+

@@ -3,13 +3,14 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from '@angular/router';
 
 
+
 @NgModule({
-    declarations:[],
     imports: [CommonModule,
              RouterModule.forChild([
                  {path: '', loadChildren: () => import('./authentication/authentication.module').then (a => a.AuthenticationModule)}
              ])],
     exports: [],
-    providers: []
+    providers: [],
+    declarations:[]
 })
-export class OrdinaryLayoutModel { }
+export class OrdinaryLayoutModule { }

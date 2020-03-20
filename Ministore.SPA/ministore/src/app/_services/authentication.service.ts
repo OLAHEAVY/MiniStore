@@ -6,6 +6,9 @@ import { JwtHelper } from 'angular2-jwt';
 
 import { RegisterModel } from "../_models/register-model";
 import { LoginModel } from "../_models/login-model";
+import { DropdownModel } from '../_models/dropdown-model';
+import { Observable } from 'rxjs';
+import { ResponseModel } from '../_models/response';
 
 @Injectable()
 export class AuthenticationService {
@@ -13,6 +16,8 @@ export class AuthenticationService {
   constructor(private http: HttpClient, private jwt: JwtHelper) {}
 
   baseUrl = environment.apiUrl + "auth/";
+  stateUrl = environment.apiUrl + "state/";
+  localGovernmentUrl = environment.apiUrl + "localgovernment/"
 
   
   setToken(user: any) {
@@ -25,7 +30,15 @@ export class AuthenticationService {
 
   //register method
   register(model: RegisterModel) {
-    return this.http.post(`${this.baseUrl}register`, model);
+    return this.http.post(`${this.baseUrl}registeruser`, model);
+  }
+
+  getStates(): Observable<ResponseModel> {
+    return this.http.get<ResponseModel>(`${this.stateUrl}getallstates`);
+  }
+
+  getLocalGovernments(id:string): Observable<ResponseModel> {
+    return this.http.get<ResponseModel>(`${this.localGovernmentUrl}getalllocalgovernments?stateId=${id}`);
   }
 
   //login method
@@ -45,8 +58,11 @@ export class AuthenticationService {
     }
   };
   loggedin() {
-    const token = localStorage.getItem('token');
-    return !this.jwt.isTokenExpired(token);
+    const token = localStorage.getItem('user');
+    if(token != null){
+      return !this.jwt.isTokenExpired(token);
+    }
+    
   }
 
   roleMatch(allowedRoles): boolean {
@@ -60,4 +76,12 @@ export class AuthenticationService {
     });
     return isMatch;
   }
+
+  confirmAccount(token: string) {
+    return this.http.get(`${this.baseUrl}confirmaccount?token=${token}`);
+}
+
+ resendConfirmationLink(model: any){
+   return this.http.post(`${this.baseUrl}resendLink`, model);
+ }
 }
