@@ -18,5 +18,11 @@ namespace MiniStore.Core.Interface
         Task<UserAccountModel> ConfirmAccount(string token);
 
         Task<bool> SendVerificationLink(ApplicationUser user);
+
+        Task<bool> SendResetPasswordLink(ApplicationUser user);
+
+        Task<ResetPasswordModel> ResetPasword(string token);
+
+        Task<ResponseMessage> PerformPasswordChange(PasswordResetModel model);
     }
 }

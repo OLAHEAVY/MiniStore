@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RegisterModel } from "src/app/_models/register-model";
 import { AuthenticationService } from "src/app/_services/authentication.service";
 import { ResponseModel } from "src/app/_models/response";
-import { DropdownModel } from 'src/app/_models/dropdown-model';
 
 @Component({
   selector: "app-register",

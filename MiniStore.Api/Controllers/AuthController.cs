@@ -218,6 +218,112 @@ namespace MiniStore.Api.Controllers
             return Ok(response);
             
         }
+
+        [HttpPost]
+        [Route("sendpasswordresetlink")]
+        public async Task<IActionResult> SendPasswordResetLink(ResendConfirmModel model)
+        {
+            var response = new ApiResult<string>();
+            try
+            {
+                var user = await _userManager.FindByNameAsync(model.Email);
+                if (user == null)
+                {
+                    response.HasError = true;
+                    response.Message = "Invalid Request";
+                }
+                else
+                {
+                    var sendPasswordResetLink = await _authService.SendResetPasswordLink(user);
+
+                    if (sendPasswordResetLink)
+                    {
+                        response.HasError = false;
+                        response.Message = "Password Reset Link sent to your mail";
+                    }
+                    else
+                    {
+                        response.HasError = true;
+                        response.Message = "Password Reset Link could not be sent";
+                    }
+                }
+
+            } catch (Exception ex)
+            {
+                _logger.LogException("Error sending password confirmation link" + ex.Message, ex);
+                response.HasError = true;
+                response.Message = "An error occurred";
+            }
+
+            return Ok(response);
+        }
+
+
+        [HttpGet]
+        [Route("confirmpasswordresetcode")]
+        public async Task<IActionResult> ConfirmPaswordResetCode(string token)
+        {
+            var response = new ApiResult<string>();
+            try
+            {
+                var result = await _authService.ResetPasword(token);
+
+                if(result.User != null)
+                {
+                    response.HasError = false;
+                    response.Message = "Please enter your new password";
+                    response.Result = result.User.Email;
+                }
+                else
+                {
+                    response.HasError = true;
+                    response.Message = "Invalid request!";
+                    
+                }
+               
+
+            }catch(Exception ex)
+            {
+                _logger.LogException("An exception occured : " + ex.Message, ex);
+                response.HasError = true;
+                response.Message = "An error occurred";
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel model)
+        {
+            var response = new ApiResult<string>();
+
+            if (string.IsNullOrEmpty(model.Token))
+                return BadRequest();
+
+            try
+            {
+                var reset = await _authService.PerformPasswordChange(model);
+                if (reset.IsSuccessful)
+                {
+                    response.HasError = false;
+                    response.Message = "Successful! Kindly proceed to login";
+                }
+                else
+                {
+                    response.HasError = true;
+                    response.Message = reset.Message;
+                }
+
+               
+            }catch(Exception ex)
+            {
+                _logger.LogException($"User Account Confirmation Failed::" + ex.Message, ex);
+            }
+
+            return Ok(response);
+        }
+        
     }
 
     

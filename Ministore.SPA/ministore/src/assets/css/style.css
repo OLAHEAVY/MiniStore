@@ -26,6 +26,13 @@ File: scss
 @import url(icons/weather-icons/css/weather-icons.min.css);
 @import url(icons/iconsmind/style.css);
 @import url(../vendor_components/animate/animate.css);
+
+
+/* You can add global styles to this file, and also import other style files */
+
+
+/* You can add global styles to this file, and also import other style files */
+
 html {
   height: 100%;
   font-size: 14px; }

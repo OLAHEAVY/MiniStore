@@ -9,11 +9,12 @@ import { LoginModel } from "../_models/login-model";
 import { DropdownModel } from '../_models/dropdown-model';
 import { Observable } from 'rxjs';
 import { ResponseModel } from '../_models/response';
+import { ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
     decodedToken: any;
-  constructor(private http: HttpClient, private jwt: JwtHelper) {}
+  constructor(private http: HttpClient, private jwt: JwtHelper, private activatedRoute: ActivatedRoute) {}
 
   baseUrl = environment.apiUrl + "auth/";
   stateUrl = environment.apiUrl + "state/";
@@ -83,5 +84,20 @@ export class AuthenticationService {
 
  resendConfirmationLink(model: any){
    return this.http.post(`${this.baseUrl}resendLink`, model);
+ }
+
+ sendPasswordResetLink(model:any){
+   return this.http.post(`${this.baseUrl}sendpasswordresetlink`, model);
+ }
+
+ confirmResetPasswordCode(token: string){
+   return this.http.get(`${this.baseUrl}confirmpasswordresetcode?token=${token}`);
+ }
+
+ resetPassword(token: string, newPassword: string){
+  //i stopped here
+
+  var data = {token, newPassword}
+  return this.http.post(`${this.baseUrl}resetpassword`, data);
  }
 }

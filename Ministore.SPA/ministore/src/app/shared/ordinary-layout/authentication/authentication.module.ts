@@ -20,6 +20,9 @@ import { ContactModalComponent } from './contact-modal/contact-modal.component';
 import { ConfirmAccountResolver } from 'src/app/_resolver/confirm-account.resolver';
 import { ConfirmAccountComponent } from './confirm-account/confirm-account.component';
 import { SendEmailconfirmationComponent } from './send-emailconfirmation/send-emailconfirmation.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordResolver } from 'src/app/_resolver/reset-password.resolver';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
     imports:[CommonModule, 
@@ -40,14 +43,24 @@ import { SendEmailconfirmationComponent } from './send-emailconfirmation/send-em
                         path: 'authentication/confirm-account',
                         resolve: { data: ConfirmAccountResolver },
                         component: ConfirmAccountComponent
-                    }
+                      },
+                      {
+                        path: 'authentication/forgot-password',
+                        component: ForgotPasswordComponent
+                      },
+                      {
+                        path: 'authentication/reset-password',
+                        resolve: {data: ResetPasswordResolver},
+                        component: ResetPasswordComponent
+
+                      }
                   ])],
-    declarations: [LoginComponent, RegisterComponent, OrdinaryHeaderComponent, ContactModalComponent, OrdinaryFooterComponent, HomeComponent, ConfirmAccountComponent,SendEmailconfirmationComponent],
+    declarations: [LoginComponent, RegisterComponent, OrdinaryHeaderComponent, ContactModalComponent, OrdinaryFooterComponent, HomeComponent, ConfirmAccountComponent,ResetPasswordComponent,SendEmailconfirmationComponent,ForgotPasswordComponent],
     entryComponents: [
         ContactModalComponent
      ],
     exports: [OrdinaryHeaderComponent,OrdinaryFooterComponent],
-    providers: [AuthenticationService, JwtHelper,ConfirmAccountResolver]
+    providers: [AuthenticationService, JwtHelper,ConfirmAccountResolver, ResetPasswordResolver]
 })
 
 export class AuthenticationModule{}

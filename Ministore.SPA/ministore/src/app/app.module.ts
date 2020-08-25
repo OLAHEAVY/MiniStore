@@ -11,6 +11,7 @@ import { CustomerModule } from './customer/customer.module';
 
 
 
+
 @NgModule({
    declarations: [
       AppComponent

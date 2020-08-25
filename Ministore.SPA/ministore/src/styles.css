@@ -4,6 +4,54 @@
 @import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
 @import '../node_modules/ngx-toastr/toastr.css';
 
+
+
+
+
+
+
+/* @import "./assets/styles/_fonts.scss";
+@import "./assets/styles/_functions.scss";
+@import "./assets/styles/mixins/_background.scss";
+@import "./assets/styles/mixins/_animation.scss";
+@import "./assets/styles/mixins/_badges.scss";
+@import "./assets/styles/mixins/_breadcrumbs.scss";
+@import "./assets/styles/mixins/_pagination.scss";
+@import "./assets/styles/mixins/_buttons.scss";
+@import "./assets/styles/mixins/_misc.scss";
+@import "./assets/styles/mixins/_color-functions.scss";
+@import "./assets/styles/mixins/_cards.scss";
+@import "./assets/styles/mixins/_tooltips.scss";
+@import "./assets/styles/mixins/_popovers.scss";
+@import "./assets/styles/mixins/_blockqoute.scss";
+@import "./assets/styles/_accordions.scss";
+@import "./assets/styles/_breadcrumbs.scss";
+@import "./assets/styles/_forms.scss";
+@import "./assets/styles/_icons.scss";
+@import "./assets/styles/_tables.scss";
+@import "./assets/styles/_buttons.scss";
+@import "./assets/styles/_badges.scss";
+@import "./assets/styles/_cards.scss";
+@import "./assets/styles/_typography.scss";
+@import "./assets/styles/_preview.scss";
+@import "./assets/styles/_lists.scss";
+@import "./assets/styles/_bootstrap-progress.scss";
+@import "./assets/styles/_bootstrap-alerts.scss";
+@import "./assets/styles/_tabs.scss";
+@import "./assets/styles/_dropdowns.scss";
+@import "./assets/styles/_pagination.scss";
+@import "./assets/styles/_popovers.scss";
+@import "./assets/styles/_modals.scss";
+@import "./assets/styles/_nav.scss";
+@import "./assets/styles/_reset.scss";
+@import "./assets/styles/_rating.scss";
+@import "./assets/styles/_layouts.scss";
+@import "./assets/styles/_tooltips.scss";
+@import "./assets/styles/_responsive.scss";
+@import "./assets/styles/_misc.scss";
+@import "./assets/styles/_utilities.scss";
+@import "./assets/styles/_demo.scss"; */
+
 @media (min-width: 768px) {
     html {
       font-size: 16px;

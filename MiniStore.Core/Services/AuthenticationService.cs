@@ -293,7 +293,127 @@ namespace MiniStore.Core.Services
             return data;
         }
 
+        public async Task<bool> SendResetPasswordLink(ApplicationUser user)
+        {
+            var passwordResetCode = await _userManager.GeneratePasswordResetTokenAsync(user);
 
+            var passwordUrlCode = _encryptionService.UrlEncodedEncryptText(JsonConvert.SerializeObject(new AccountVerificationModel
+            {
+                Code = passwordResetCode,
+                UserId = user.Id
+            }));
 
+            //redirect url to be sent to the mail
+
+            var resetPasswordUrl = string.Format(_environmentalVariables.ClientUrl + "{0}/{1}?token={2}", "authentication", "reset-password", passwordUrlCode);
+            System.IO.File.WriteAllText("passwordreset.txt", resetPasswordUrl);
+
+            string Message = "Click on the Link to reset your Password";
+
+            var subject = "Reset Password";
+
+            //get webroot path 
+
+            var webroot = _env.WebRootPath;
+
+            //Get TemplateFile Located at wwwroot/templates/ConfirmAccount.html
+            var pathToFile = webroot
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "templates"
+                            + Path.DirectorySeparatorChar.ToString()
+                            + "ForgotPassword.html";
+            var builder = new BodyBuilder();
+            using (StreamReader SourceReader = System.IO.File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = SourceReader.ReadToEnd();
+            }
+
+            //{0} : Subject
+            //{1}:  DateTime
+            //{2}:  Name
+            //{3}: Message
+            //{4}: callbackUrl
+
+            string messageBody = string.Format(builder.HtmlBody,
+                subject,
+                String.Format("{0:dddd, d MMMM yyyy}", DateTime.Now),
+                user.FirstName,
+                Message,
+                resetPasswordUrl
+                );
+
+            await _emailService.SendEmailAsync(user.Email, subject, messageBody);
+
+            return true;
+        }
+
+        //reset password
+        //method to reset password
+        public async Task<ResetPasswordModel> ResetPasword(string token)
+        {
+            var data = new ResetPasswordModel();
+            var code = _encryptionService.DecryptText(token);
+            var result = new IdentityResult();
+            if (!string.IsNullOrEmpty(code))
+            {
+                var resetObj = JsonConvert.DeserializeObject<AccountVerificationModel>(code);
+                var user = await _userManager.FindByIdAsync(resetObj.UserId.ToString());
+
+           
+                data.User = user;
+                data.Token = code;
+            }
+
+            return data;
+        }
+
+        public async Task<ResponseMessage> PerformPasswordChange(PasswordResetModel model)
+        {
+            var code = _encryptionService.UrlDecodeEncryptText(model.Token);
+            var resetPwdObj = JsonConvert.DeserializeObject<AccountVerificationModel>(code);
+            var user = await _userManager.FindByIdAsync(resetPwdObj.UserId.ToString());
+
+            if(user != null)
+            {
+                LoginModel loginModel = new LoginModel()
+                {
+                    Email = user.Email,
+                    Password = model.NewPassword
+                };
+
+                //trying to sign the user in to the application to check password
+
+                var result = await CheckValidUser(loginModel);
+
+                if (result.ResponseMessage.IsSuccessful)
+                {
+                    return _commonHelper.OutputMessage(false, "You can not use a recent Password.Enter a different Password");
+                }
+                else
+                {
+                    var passwordResult = _userManager.ResetPasswordAsync(user, resetPwdObj.Code, model.NewPassword);
+
+                    if (passwordResult.Result.Succeeded)
+                    {
+                        if (await _userManager.IsLockedOutAsync(user))
+                        {
+                            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+                        }
+
+                        return _commonHelper.OutputMessage(true, "Successful! Kindly proceed to login");
+                    }
+                    else
+                    {
+                        return _commonHelper.OutputMessage(false, passwordResult.Result.Errors.FirstOrDefault().Description);
+                    }
+                }
+                
+               
+            }
+            else
+            {
+                return _commonHelper.OutputMessage(false, "User does not exist");
+            }
+        }
     }
 }
